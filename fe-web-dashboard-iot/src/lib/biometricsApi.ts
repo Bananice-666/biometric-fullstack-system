@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = 'http://localhost:8000'
+const DEFAULT_API_BASE_URL = 'http://192.168.18.191:8000'
 
 export type HealthResponse = {
   status: string
