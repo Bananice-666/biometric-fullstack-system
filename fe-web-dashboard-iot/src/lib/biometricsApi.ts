@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = 'http://192.168.18.191:8000'
+const DEFAULT_API_BASE_URLS = ['http://localhost:8000', 'http://192.168.18.191:8000']
 
 export type HealthResponse = {
   status: string
@@ -50,8 +50,25 @@ type ApiErrorBody = {
   message?: string
 }
 
-function getApiBaseUrl() {
-  return import.meta.env.VITE_BIOMETRY_API_URL || DEFAULT_API_BASE_URL
+function getApiBaseUrls() {
+  const configuredUrls = import.meta.env.VITE_BIOMETRY_API_URL?.split(',').map((value:any) => value.trim()).filter(Boolean)
+
+  return configuredUrls && configuredUrls.length > 0 ? configuredUrls : DEFAULT_API_BASE_URLS
+}
+
+async function fetchFromApi(path: string, init?: RequestInit) {
+  const urls = getApiBaseUrls()
+  let lastError: unknown = null
+
+  for (const baseUrl of urls) {
+    try {
+      return await fetch(`${baseUrl}${path}`, init)
+    } catch (error) {
+      lastError = error
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error('No se pudo conectar con ningún backend configurado.')
 }
 
 async function readErrorMessage(response: Response) {
@@ -64,7 +81,7 @@ async function readErrorMessage(response: Response) {
 }
 
 async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${getApiBaseUrl()}${path}`)
+  const response = await fetchFromApi(path)
 
   if (!response.ok) {
     throw new Error(await readErrorMessage(response))
@@ -74,7 +91,7 @@ async function getJson<T>(path: string): Promise<T> {
 }
 
 async function postFormData<T>(path: string, formData: FormData): Promise<T> {
-  const response = await fetch(`${getApiBaseUrl()}${path}`, {
+  const response = await fetchFromApi(path, {
     method: 'POST',
     body: formData,
   })
@@ -87,7 +104,7 @@ async function postFormData<T>(path: string, formData: FormData): Promise<T> {
 }
 
 async function deleteJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${getApiBaseUrl()}${path}`, {
+  const response = await fetchFromApi(path, {
     method: 'DELETE',
   })
 

@@ -15,4 +15,5 @@ npm install
 npm run dev
 ```
 
-Si el backend no está en `http://localhost:8000`, define `VITE_BIOMETRY_API_URL` con la URL correcta.
+Por defecto el frontend prueba `http://localhost:8000` y `http://192.168.18.191:8000`.
+Si quieres usar otras URLs, define `VITE_BIOMETRY_API_URL` con una o varias direcciones separadas por coma.
