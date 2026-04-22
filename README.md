@@ -8,7 +8,7 @@ Sistema **full-stack** de biometría facial compuesto por:
 - **Frontend** (React + TypeScript): dashboard web que usa la cámara del navegador para capturar rostros y operar contra la API.
 - **Orquestación**: `docker-compose.yml` para levantar ambos servicios.
 
-## Composición de lenguajes (aprox.)
+## Composición de lenguajes
 - Python
 - TypeScript
 
