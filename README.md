@@ -9,10 +9,8 @@ Sistema **full-stack** de biometría facial compuesto por:
 - **Orquestación**: `docker-compose.yml` para levantar ambos servicios.
 
 ## Composición de lenguajes (aprox.)
-- Python: 40.4%
-- TypeScript: 35%
-- CSS: 22.4%
-- Other: 2.2%
+- Python
+- TypeScript
 
 ---
 
